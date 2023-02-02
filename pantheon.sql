@@ -31,3 +31,6 @@ ON
 	t1.occupation = t2.occupation AND
 	t1.hpi = t2.max_hpi
 ORDER BY t2.max_hpi DESC
+
+-- Do some case statements to sort by era or occupation type?
+-- Alex clean data with sQL video
