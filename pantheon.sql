@@ -32,5 +32,180 @@ ON
 	t1.hpi = t2.max_hpi
 ORDER BY t2.max_hpi DESC
 
--- Do some case statements to sort by era or occupation type?
--- Alex clean data with sQL video
+-- Top writer by country
+SELECT 
+	t3.name, 
+	t3.birthyear, 
+	t3.deathyear, 
+	t3.bplace_country, 
+	t3.max_hpi
+FROM 
+	(SELECT 
+		name, 
+	 	birthyear,
+	 	deathyear, 
+	 	bplace_country, 
+	 	MAX(hpi) AS max_hpi
+	FROM pantheon 
+	WHERE occupation = 'WRITER'
+	GROUP BY 1, 2, 3, 4) t3
+JOIN 
+	(SELECT 
+	 	bplace_country, 
+	 	MAX(max_hpi) AS max_hpi
+	FROM 
+		(SELECT 
+		 	name, 
+		 	bplace_country, 
+		 	MAX(hpi) AS max_hpi
+		FROM pantheon 
+		WHERE occupation = 'WRITER'
+		GROUP BY 1, 2) t1
+	GROUP BY 1) t2
+ON
+	t2.bplace_country = t3.bplace_country
+	AND t2.max_hpi = t3.max_hpi
+ORDER BY 5 DESC
+
+-- Top painter by country
+SELECT 
+	t3.name, 
+	t3.birthyear, 
+	t3.deathyear, 
+	t3.bplace_country, 
+	t3.max_hpi
+FROM 
+	(SELECT 
+		name, 
+	 	birthyear,
+	 	deathyear, 
+	 	bplace_country, 
+	 	MAX(hpi) AS max_hpi
+	FROM pantheon 
+	WHERE occupation = 'PAINTER'
+	GROUP BY 1, 2, 3, 4) t3
+JOIN 
+	(SELECT 
+	 	bplace_country, 
+	 	MAX(max_hpi) AS max_hpi
+	FROM 
+		(SELECT 
+		 	name, 
+		 	bplace_country, 
+		 	MAX(hpi) AS max_hpi
+		FROM pantheon 
+		WHERE occupation = 'PAINTER'
+		GROUP BY 1, 2) t1
+	GROUP BY 1) t2
+ON
+	t2.bplace_country = t3.bplace_country
+	AND t2.max_hpi = t3.max_hpi
+ORDER BY 5 DESC
+
+-- Top composer by country
+SELECT 
+	t3.name, 
+	t3.birthyear, 
+	t3.deathyear, 
+	t3.bplace_country, 
+	t3.max_hpi
+FROM 
+	(SELECT 
+		name, 
+	 	birthyear,
+	 	deathyear, 
+	 	bplace_country, 
+	 	MAX(hpi) AS max_hpi
+	FROM pantheon 
+	WHERE occupation = 'COMPOSER'
+	GROUP BY 1, 2, 3, 4) t3
+JOIN 
+	(SELECT 
+	 	bplace_country, 
+	 	MAX(max_hpi) AS max_hpi
+	FROM 
+		(SELECT 
+		 	name, 
+		 	bplace_country, 
+		 	MAX(hpi) AS max_hpi
+		FROM pantheon 
+		WHERE occupation = 'COMPOSER'
+		GROUP BY 1, 2) t1
+	GROUP BY 1) t2
+ON
+	t2.bplace_country = t3.bplace_country
+	AND t2.max_hpi = t3.max_hpi
+ORDER BY 5 DESC
+
+
+-- Top person in each occupation for the United States
+SELECT 
+	t3.name, 
+	t3.birthyear, 
+	t3.deathyear, 
+	t3.occupation, 
+	t3.max_hpi
+FROM 
+	(SELECT 
+		name, 
+	 	birthyear,
+	 	deathyear, 
+	 	occupation, 
+	 	MAX(hpi) AS max_hpi
+	FROM pantheon 
+	WHERE bplace_country = 'United States'
+	GROUP BY 1, 2, 3, 4) t3
+JOIN 
+	(SELECT 
+	 	occupation, 
+	 	MAX(max_hpi) AS max_hpi
+	FROM 
+		(SELECT 
+		 	name, 
+		 	occupation, 
+		 	MAX(hpi) AS max_hpi
+		FROM pantheon 
+		WHERE bplace_country = 'United States'
+		GROUP BY 1, 2) t1
+	GROUP BY 1) t2
+ON
+	t2.occupation = t3.occupation
+	AND t2.max_hpi = t3.max_hpi
+ORDER BY 5 DESC
+
+-- Top person in each occupation for the United Kingdom
+SELECT 
+	t3.name, 
+	t3.birthyear, 
+	t3.deathyear, 
+	t3.occupation, 
+	t3.max_hpi
+FROM 
+	(SELECT 
+		name, 
+	 	birthyear,
+	 	deathyear, 
+	 	occupation, 
+	 	MAX(hpi) AS max_hpi
+	FROM pantheon 
+	WHERE bplace_country = 'United Kingdom'
+	GROUP BY 1, 2, 3, 4) t3
+JOIN 
+	(SELECT 
+	 	occupation, 
+	 	MAX(max_hpi) AS max_hpi
+	FROM 
+		(SELECT 
+		 	name, 
+		 	occupation, 
+		 	MAX(hpi) AS max_hpi
+		FROM pantheon 
+		WHERE bplace_country = 'United Kingdom'
+		GROUP BY 1, 2) t1
+	GROUP BY 1) t2
+ON
+	t2.occupation = t3.occupation
+	AND t2.max_hpi = t3.max_hpi
+ORDER BY 5 DESC
+
+-- Top person born in each year, reaching a threshold of 75 hpi
